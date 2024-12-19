@@ -15,20 +15,18 @@ datasource db {
 }
 
 model User {
-  id              String @id @default(cuid())
-  email           String @unique
-  displayName   String?
-  avatarUrl     String?
-  emailVerified DateTime?
-  phoneNumber   String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  Authenticator Authenticator[]  
+  id               String        @id @default(cuid())
+  email            String        @unique
+  name             String?
+  image            String?
+  emailVerified    DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  accounts         Account[]
+  sessions         Session[]
   groupMemberships GroupMember[]
-  createdGroups   Group[] @relation("GroupCreator")
-  bets            Bet[]   // Add this relation
+  createdGroups    Group[]       @relation("GroupCreator")
+  bets             Bet[] // Add this relation
 }
 
 model Account {
@@ -43,69 +41,53 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
- 
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@id([provider, providerAccountId])
 }
- 
+
 model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@id([identifier, token])
-}
- 
-// Optional for WebAuthn support
-model Authenticator {
-  credentialID         String  @unique
-  userId               String
-  providerAccountId    String
-  credentialPublicKey  String
-  counter              Int
-  credentialDeviceType String
-  credentialBackedUp   Boolean
-  transports           String?
- 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  @@id([userId, credentialID])
 }
 
 model Group {
-  id          String @id @default(cuid())
-  name        String
-  creatorId   String
-  creator     User @relation("GroupCreator", fields: [creatorId], references: [id])
-  members     GroupMember[]
-  milestones  Milestone[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String        @id @default(cuid())
+  name       String
+  creatorId  String
+  creator    User          @relation("GroupCreator", fields: [creatorId], references: [id])
+  members    GroupMember[]
+  milestones Milestone[]
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
 }
 
 model GroupMember {
-  id        String   @id @default(cuid())
-  userId    String
-  groupId   String
-  user      User     @relation(fields: [userId], references: [id])
-  group     Group    @relation(fields: [groupId], references: [id])
-  joinedAt  DateTime @default(now())
+  id       String   @id @default(cuid())
+  userId   String
+  groupId  String
+  user     User     @relation(fields: [userId], references: [id])
+  group    Group    @relation(fields: [groupId], references: [id])
+  joinedAt DateTime @default(now())
 
-  @@unique([userId, groupId])  // Prevent duplicate memberships
+  @@unique([userId, groupId]) // Prevent duplicate memberships
   @@index([userId])
   @@index([groupId])
 }
@@ -129,7 +111,7 @@ model Bet {
   amount      Float
   milestoneId String
   milestone   Milestone @relation(fields: [milestoneId], references: [id])
-  userId      String    
+  userId      String
   user        User      @relation(fields: [userId], references: [id])
   createdAt   DateTime  @default(now())
 
