@@ -44,7 +44,7 @@ export function NavBar({ user }: NavBarProps) {
         </Link>
 
         <div className="ml-auto flex items-center space-x-4">
-          <ThemeToggle  />
+          <ThemeToggle />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -67,12 +67,9 @@ export function NavBar({ user }: NavBarProps) {
             <DropdownMenuContent align="end" className="w-56">
               {user?.email && (
                 <div className="p-2 text-sm text-muted-foreground">
-                  {user.email}
+                  {user.name}
                 </div>
               )}
-              <DropdownMenuItem onClick={() => router.push("/profile")}>
-                Profile
-              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="text-red-600 dark:text-red-400"
