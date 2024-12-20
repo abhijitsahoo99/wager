@@ -17,7 +17,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     session: async ({ session, user }) => {
-      console.log("Session Callback:", { session, user });
+      // console.log("Session Callback:", { session, user });
       if (session?.user) {
         session.user.id = user.id;
       }
@@ -26,11 +26,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   events: {
     createUser: async ({ user }) => {
-      console.log("New user created:", user);
+      // console.log("New user created:", user);
       // You can add additional logic here when a user is created
     },
     signIn: async ({ user, account, profile }) => {
-      console.log("User signed in:", user);
+      // console.log("User signed in:", user);
       // You can add additional logic here when a user signs in
     },
   },
