@@ -3,8 +3,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { NavBar } from "@/components/custom/navbar";
 import { SplashScreen } from "@/components/custom/splash-screen";
-// import { CreateGroupDialog } from "@/components/custom/create-group-dialog";
-// import { GroupsList } from "@/components/custom/groups-list";
+import { GroupList } from "@/components/custom/groupList";
 import { CreateGroup } from "@/components/custom/createGroup";
 
 export default async function DashboardPage() {
@@ -22,7 +21,7 @@ export default async function DashboardPage() {
         <div className="flex justify-center items-center">
           <CreateGroup />
         </div>
-        {/* <GroupsList userId={session.user.id} /> */}
+        <GroupList />
       </main>
     </div>
   );
