@@ -10,6 +10,7 @@ export type GroupMember = {
   id: string;
   userId: string;
   user: {
+    id: string;
     name: string | null;
     image: string | null;
   };
@@ -22,4 +23,3 @@ export type GroupWithMembers = Group & {
   };
   totalPot?: number;
 };
-

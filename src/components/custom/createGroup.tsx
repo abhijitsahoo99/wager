@@ -8,17 +8,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createGroup } from "@/server/group";
 
-export const CreateGroup = () => {
+export const CreateGroup = ({ onGroupCreated }: { onGroupCreated: () => void }) => {
   const [newGroupName, setNewGroupName] = useState("");
-  const router = useRouter();
 
   const handleCreateGroup = async () => {
     if (!newGroupName.trim()) return;
 
     const result = await createGroup(newGroupName);
-    if (result.success) {
+    if (result.success ) {
       setNewGroupName("");
-      router.refresh();
+      onGroupCreated();
     } else {
       console.error(result.error);
     }

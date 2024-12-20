@@ -1,10 +1,10 @@
 // src/app/dashboard/page.tsx
+
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { NavBar } from "@/components/custom/navbar";
 import { SplashScreen } from "@/components/custom/splash-screen";
-import { GroupList } from "@/components/custom/groupList";
-import { CreateGroup } from "@/components/custom/createGroup";
+import { DashboardContent } from "./content";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -15,13 +15,10 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      <SplashScreen />
+      {/* <SplashScreen /> */}
       <NavBar user={session.user} />
       <main className="max-w-7xl mx-auto p-4 space-y-6">
-        <div className="flex justify-center items-center">
-          <CreateGroup />
-        </div>
-        <GroupList />
+        <DashboardContent />
       </main>
     </div>
   );

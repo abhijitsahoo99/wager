@@ -1,42 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { getGroupByName, getGroups } from "@/server/group";
-import type { GroupWithMembers } from "@/types/queries";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import type { GroupWithMembers } from "@/types/queries";
 
-export function OpenGroup({ groupName }: { groupName: string }) {
-  const [group, setGroup] = useState<GroupWithMembers | null>(null);
-  const [loading, setLoading] = useState(true);
+interface GroupDetailsProps {
+  group: GroupWithMembers;
+}
+
+export function OpenGroup({ group }: GroupDetailsProps) {
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchGroup = async () => {
-      try {
-        const result = await getGroupByName(groupName);
-        if (result.success && result.group) {
-          setGroup(result.group);
-        }
-      } catch (error) {
-        console.error("Failed to fetch group:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchGroup();
-  }, [groupName]);
-
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
-  if (!group) return <div>Group not found</div>;
 
   return (
     <div className="space-y-2">

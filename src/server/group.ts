@@ -21,7 +21,7 @@ export const createGroup = async (name: string) => {
         },
       },
     });
-    return { success: true, group };
+    return { success: true };
   } catch (error) {
     console.error(error);
     return { success: false, error: "Failed to create group" };
@@ -48,6 +48,7 @@ export const getGroups = async () => {
           include: {
             user: {
               select: {
+                id: true,
                 name: true,
                 image: true,
               },
@@ -71,16 +72,22 @@ export const getGroups = async () => {
   }
 };
 
-export const getGroupByName = async (groupName: string) => {
+export const getGroupByName = async (name: string) => {
   try {
     const session = await auth();
     if (!session?.user?.id) {
       throw new Error("User not authenticated");
     }
 
+    console.log("Searching for group:", name); // Debug log
+    console.log("User ID:", session.user.id); // Debug log
+
     const group = await prisma.group.findFirst({
       where: {
-        name: groupName,
+        name: {
+          equals: name,
+          mode: "insensitive", // Add case-insensitive search
+        },
         members: {
           some: {
             userId: session.user.id,
@@ -92,6 +99,7 @@ export const getGroupByName = async (groupName: string) => {
           include: {
             user: {
               select: {
+                id: true,
                 name: true,
                 image: true,
               },
@@ -102,6 +110,7 @@ export const getGroupByName = async (groupName: string) => {
     });
 
     if (!group) {
+      console.log("No group found with name:", name); // Debug log
       return { success: false, error: "Group not found" };
     }
 

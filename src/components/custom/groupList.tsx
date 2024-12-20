@@ -2,28 +2,23 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
 import { getGroups } from "@/server/group";
 import type { GroupWithMembers } from "@/types/queries";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
-export function GroupList() {
+export const GroupList = () => {
   const router = useRouter();
   const [groups, setGroups] = useState<GroupWithMembers[]>([]);
-  const [currentView, setCurrentView] = useState<"groups" | "groupDetail">(
-    "groups"
-  );
-  const [selectedGroup, setSelectedGroup] = useState<GroupWithMembers | null>(
-    null
-  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchGroups = async () => {
       try {
+        setLoading(true);
         const result = await getGroups();
         if (result.success && result.groups) {
+          console.log(result.groups);
           setGroups(result.groups);
         }
       } catch (error) {
@@ -37,16 +32,23 @@ export function GroupList() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
   }
-
-  const renderGroups = () => (
-    <div className="flex flex-col items-center">
+  return (
+    <div className="w-full max-w-2xl">
       {groups.map((group) => (
         <Card
           key={group.id}
           className="cursor-pointer hover:border-blue-500 transition-colors w-full max-w-2xl"
-          onClick={() => router.push(`/${group.name}`)}
+          onClick={() => {
+            const encodedName = encodeURIComponent(group.name);
+            console.log("Navigating to group:", group.name); // Debug log
+            router.push(`/groups/${encodedName}`);
+          }}
         >
           <CardContent className="p-4">
             <h4 className="font-semibold">{group.name}</h4>
@@ -61,9 +63,9 @@ export function GroupList() {
                   />
                 ))}
               </div>
-              {group.members.length > 3 && (
+              {group.members.length > 10 && (
                 <span className="text-sm text-gray-500">
-                  +{group.members.length - 3} more
+                  +{group.members.length - 10} more
                 </span>
               )}
             </div>
@@ -75,5 +77,4 @@ export function GroupList() {
       ))}
     </div>
   );
-  return <div className="space-y-6">{renderGroups()}</div>;
-}
+};
