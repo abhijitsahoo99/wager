@@ -18,7 +18,7 @@ export const SplashScreen = () => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#EFC95F]"
       initial={{ opacity: 1 }}
       animate={{ opacity: 0 }}
       transition={{ duration: 0.5, delay: 1.5 }}
@@ -32,7 +32,7 @@ export const SplashScreen = () => {
           damping: 20,
         }}
       >
-        <h1 className="text-4xl font-bold">Wager</h1>
+        <h1 className="text-4xl font-bold text-[#DCAC3B]">Wager</h1>
       </motion.div>
     </motion.div>
   );

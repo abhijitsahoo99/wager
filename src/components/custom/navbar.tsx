@@ -39,8 +39,8 @@ export function NavBar({ user }: NavBarProps) {
     <div className="border-b">
       <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">
         <Link href="/" className="flex items-center space-x-2">
-          <Target className="h-6 w-6" />
-          <span className="font-bold text-xl">Wager</span>
+          <Target className="h-6 w-6 text-[#DCAC3B]" />
+          <span className="font-bold text-xl text-[#DCAC3B]">Wager</span>
         </Link>
 
         <div className="ml-auto flex items-center space-x-4">
@@ -58,7 +58,7 @@ export function NavBar({ user }: NavBarProps) {
                     src={user?.image || ""}
                     alt={user?.name || "User avatar"}
                   />
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-[#EFC95F] text-[#DCAC3B] border-[#DCAC3B]">
                     {user?.name ? getInitials(user.name) : "?"}
                   </AvatarFallback>
                 </Avatar>
@@ -66,13 +66,13 @@ export function NavBar({ user }: NavBarProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               {user?.email && (
-                <div className="p-2 text-sm text-muted-foreground">
+                <div className="p-2 text-sm text-muted-foreground ">
                   {user.name}
                 </div>
               )}
               <DropdownMenuItem
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="text-red-600 dark:text-red-400"
+                className="text-red-600 dark:text-red-400 "
               >
                 Log out
               </DropdownMenuItem>
