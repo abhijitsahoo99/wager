@@ -16,7 +16,7 @@ export function OpenGroup({ group }: GroupDetailsProps) {
     <div className="space-y-2">
       <Button
         variant="ghost"
-        className="mb-4 bg-slate-900 text-base"
+        className="mb-4 text-base"
         onClick={() => router.push("/home")}
       >
         <ArrowLeft className="h-6 w-6 mr-2" />
@@ -24,7 +24,7 @@ export function OpenGroup({ group }: GroupDetailsProps) {
       </Button>
 
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">{group.name}</h2>
+        <h2 className="text-lg sm:text-xl">{group.name}</h2>
         <div className="flex items-center gap-2">
           <div className="flex -space-x-2">
             {group.members.map((member) => (
@@ -36,7 +36,10 @@ export function OpenGroup({ group }: GroupDetailsProps) {
               />
             ))}
           </div>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer "
+          >
             Invite Members
           </Button>
         </div>
