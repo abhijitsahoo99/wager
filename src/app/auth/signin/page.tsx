@@ -17,7 +17,7 @@ export default async function SignInPage() {
           <h1 className="text-2xl font-bold text-[#DCAC3B]">
             Welcome to Wager
           </h1>
-          <p className="text-muted-foreground text-[#000000]">
+          <p className="text-[#000000] font-roboto text-lg sm:text-xl">
             Sign in to your account
           </p>
         </div>

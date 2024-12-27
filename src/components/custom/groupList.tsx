@@ -43,14 +43,14 @@ export const GroupList = () => {
       {groups.map((group) => (
         <Card
           key={group.id}
-          className="cursor-pointer hover:border-blue-500 transition-colors w-full max-w-2xl"
+          className="cursor-pointer hover:border-blue-500 transition-colors w-full max-w-2xl bg-[#F0D9A3] bg-opacity-50 font-roboto mb-4 rounded-xl border-2 border-[#F0D9A3] border-opacity-100"
           onClick={() => {
             const encodedName = encodeURIComponent(group.name);
             console.log("Navigating to group:", group.name); // Debug log
             router.push(`/groups/${encodedName}`);
           }}
         >
-          <CardContent className="p-4">
+          <CardContent className="p-4 gap-4">
             <h4 className="font-semibold">{group.name}</h4>
             <div className="flex items-center gap-2 mt-2">
               <div className="flex -space-x-2">

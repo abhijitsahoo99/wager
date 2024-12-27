@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Target, User } from "lucide-react";
-import { ThemeToggle } from "./theme-toggle";
+import { Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,7 +12,6 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import Image from "next/image";
 
 // Add proper type for user
 interface NavBarProps {
@@ -44,8 +42,6 @@ export function NavBar({ user }: NavBarProps) {
         </Link>
 
         <div className="ml-auto flex items-center space-x-4">
-          <ThemeToggle />
-
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -58,7 +54,7 @@ export function NavBar({ user }: NavBarProps) {
                     src={user?.image || ""}
                     alt={user?.name || "User avatar"}
                   />
-                  <AvatarFallback className="bg-[#EFC95F] text-[#DCAC3B] border-[#DCAC3B]">
+                  <AvatarFallback className="text-[#DCAC3B] border-2 border-[#DCAC3B]">
                     {user?.name ? getInitials(user.name) : "?"}
                   </AvatarFallback>
                 </Avatar>

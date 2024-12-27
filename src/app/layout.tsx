@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers/provider";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto",
+});
 
 const publicPixel = localFont({
   src: "../../public/public-pixel/PublicPixel.ttf",
@@ -21,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${publicPixel.className} bg-[#EFC95F]`}>
+      <body className={`${roboto.variable} ${publicPixel.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>
