@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { NavBar } from "@/components/custom/navbar";
 import { OpenGroup } from "@/components/custom/openGroup";
 import { getGroupByName } from "@/server/group";
-
+import { GroupContent } from "./content";
 interface PageProps {
   params: {
     groupName: string;
@@ -17,7 +17,8 @@ export default async function GroupPage({ params }: PageProps) {
   }
 
   // Decode the URL-encoded group name
-  const decodedGroupName = decodeURIComponent(params.groupName);
+  const { groupName } = params;
+  const decodedGroupName = decodeURIComponent(groupName);
   console.log("Fetching group:", decodedGroupName); // Debug log
 
   const groupResult = await getGroupByName(decodedGroupName);
@@ -30,8 +31,9 @@ export default async function GroupPage({ params }: PageProps) {
   return (
     <div>
       <NavBar user={session.user} />
-      <main className="max-w-7xl mx-auto p-4">
+      <main className="max-w-7xl mx-auto p-4 space-y-6">
         <OpenGroup group={groupResult.group} />
+        <GroupContent groupId={groupResult.group.id} />
       </main>
     </div>
   );

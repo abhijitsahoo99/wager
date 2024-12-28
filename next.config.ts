@@ -7,6 +7,16 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com",
         pathname: "/a/**",
       },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.google.com",
+        pathname: "**",
+      },
     ],
   },
 };

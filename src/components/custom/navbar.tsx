@@ -12,15 +12,8 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { NavBarProps } from "@/types/queries";
 
-// Add proper type for user
-interface NavBarProps {
-  user: {
-    image?: string | null;
-    name?: string | null;
-    email?: string | null;
-  } | null;
-}
 
 function getInitials(name: string) {
   const names = name.split(" ");
@@ -46,7 +39,7 @@ export function NavBar({ user }: NavBarProps) {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="relative size-8 rounded-full overflow-hidden"
+                className="relative size-8 rounded-full overflow-hidden h-12 w-12"
                 aria-label="Open user menu"
               >
                 <Avatar>
@@ -54,7 +47,7 @@ export function NavBar({ user }: NavBarProps) {
                     src={user?.image || ""}
                     alt={user?.name || "User avatar"}
                   />
-                  <AvatarFallback className="text-[#DCAC3B] border-2 border-[#DCAC3B]">
+                  <AvatarFallback className="text-[#DCAC3B]">
                     {user?.name ? getInitials(user.name) : "?"}
                   </AvatarFallback>
                 </Avatar>

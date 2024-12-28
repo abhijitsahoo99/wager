@@ -16,7 +16,7 @@ export function OpenGroup({ group }: GroupDetailsProps) {
     <div className="space-y-2">
       <Button
         variant="ghost"
-        className="mb-4 text-base"
+        className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 mb-4 text-base"
         onClick={() => router.push("/home")}
       >
         <ArrowLeft className="h-6 w-6 mr-2" />
@@ -32,7 +32,7 @@ export function OpenGroup({ group }: GroupDetailsProps) {
                 key={member.id}
                 src={member.user.image || "/default-avatar.png"}
                 alt={member.user.name || "Member"}
-                className="w-8 h-8 rounded-full border-2 border-white"
+                className="w-10 h-10 rounded-full border-2 border-white"
               />
             ))}
           </div>
