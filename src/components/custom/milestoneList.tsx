@@ -9,11 +9,13 @@ import { Milestone } from "@prisma/client";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toggleMilestoneCompletion } from "@/server/milestone";
+import { createBet } from "@/server/bet";
 
 export const MilestoneList = ({ groupId }: { groupId: string }) => {
   const router = useRouter();
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
+  const [betAmount, setBetAmount] = useState(0);
 
   useEffect(() => {
     const fetchMilestones = async () => {
@@ -47,6 +49,13 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
     }
   };
 
+  const handleBetSubmit = async (milestoneId: string) => {
+    const result = await createBet(betAmount, milestoneId);
+    if (result.success) {
+      setBetAmount(0);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center">
@@ -68,7 +77,9 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
             </div>
             <Button
               variant="outline"
-              className={"bg-[#F0D9A3] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold"}
+              className={
+                "bg-[#F0D9A3] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold"
+              }
               onClick={() => handleCompleted(milestone.id)}
             >
               {milestone.isCompleted ? "Completed" : "Mark Complete"}
@@ -78,10 +89,22 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
             <CardContent className="flex justify-between items-center gap-2">
               <Input
                 placeholder="Enter Bet Amount"
-                type="text"
+                type="number"
+                min="1"
+                step="1"
                 className="text-xs sm:text-sm font-semibold"
+                pattern="^[1-9][0-9]*$"
+                onInput={(e) => {
+                  const input = e.currentTarget;
+                  if (!input.value.match(/^[1-9][0-9]*$/)) {
+                    input.value = input.value.replace(/^0+|[^\d]/g, "");
+                  }
+                }}
               />
-              <Button className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold">
+              <Button
+                className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold"
+                onClick={() => handleBetSubmit(milestone.id)}
+              >
                 <Plus className="h-4 w-4 mr-2" />
                 Place Bet
               </Button>
