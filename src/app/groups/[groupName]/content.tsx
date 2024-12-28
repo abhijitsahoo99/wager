@@ -1,6 +1,7 @@
 "use client";
 
 import { CreateMilestones } from "@/components/custom/createMilestones";
+import { MilestoneList } from "@/components/custom/milestoneList";
 
 export const GroupContent = ({ groupId }: { groupId: string }) => {
   return (
@@ -11,7 +12,7 @@ export const GroupContent = ({ groupId }: { groupId: string }) => {
         }}
         groupId={groupId}
       />
-      {/* <MilestoneList /> */}
+      <MilestoneList groupId={groupId} />       
     </div>
   );
 };
