@@ -100,6 +100,8 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
                     input.value = input.value.replace(/^0+|[^\d]/g, "");
                   }
                 }}
+                value={betAmount}
+                onChange={(e) => setBetAmount(Number(e.target.value))}
               />
               <Button
                 className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold"

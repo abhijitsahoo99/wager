@@ -1,3 +1,4 @@
+"use server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 
@@ -9,7 +10,7 @@ export const createBet = async (amount: number, milestoneId: string) => {
     }
 
     const bet = await prisma.bet.create({
-      data: {   
+      data: {
         amount,
         milestoneId,
         userId: session.user.id,
