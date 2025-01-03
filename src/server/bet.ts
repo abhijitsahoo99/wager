@@ -22,3 +22,12 @@ export const createBet = async (amount: number, milestoneId: string) => {
     return { success: false, error: "Failed to create bet" };
   }
 };
+
+export const getBets = async (milestoneId: string) => {
+  const bets = await prisma.bet.findMany({
+    where: {
+      milestoneId,
+    },
+  });
+  return bets;
+};

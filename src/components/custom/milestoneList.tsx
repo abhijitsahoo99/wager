@@ -10,12 +10,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toggleMilestoneCompletion } from "@/server/milestone";
 import { createBet } from "@/server/bet";
+import BetList from "./betList";
 
 export const MilestoneList = ({ groupId }: { groupId: string }) => {
   const router = useRouter();
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
-  const [betAmount, setBetAmount] = useState(0);
+  const [betAmounts, setBetAmounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
     const fetchMilestones = async () => {
@@ -50,9 +51,12 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
   };
 
   const handleBetSubmit = async (milestoneId: string) => {
-    const result = await createBet(betAmount, milestoneId);
+    const result = await createBet(betAmounts[milestoneId] || 0, milestoneId);
     if (result.success) {
-      setBetAmount(0);
+      setBetAmounts((prev) => ({
+        ...prev,
+        [milestoneId]: 0,
+      }));
     }
   };
 
@@ -78,7 +82,7 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
             <Button
               variant="outline"
               className={
-                "bg-[#F0D9A3] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold"
+                "bg-[#F0D9A3] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold rounded-xl"
               }
               onClick={() => handleCompleted(milestone.id)}
             >
@@ -86,30 +90,38 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
             </Button>
           </CardHeader>
           {!milestone.isCompleted && (
-            <CardContent className="flex justify-between items-center gap-2">
-              <Input
-                placeholder="Enter Bet Amount"
-                type="number"
-                min="1"
-                step="1"
-                className="text-xs sm:text-sm font-semibold"
-                pattern="^[1-9][0-9]*$"
-                onInput={(e) => {
-                  const input = e.currentTarget;
-                  if (!input.value.match(/^[1-9][0-9]*$/)) {
-                    input.value = input.value.replace(/^0+|[^\d]/g, "");
+            <CardContent className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Enter Bet Amount"
+                  type="number"
+                  min="1"
+                  step="1"
+                  className="text-xs sm:text-sm font-semibold rounded-xl"
+                  pattern="^[1-9][0-9]*$"
+                  onInput={(e) => {
+                    const input = e.currentTarget;
+                    if (!input.value.match(/^[1-9][0-9]*$/)) {
+                      input.value = input.value.replace(/^0+|[^\d]/g, "");
+                    }
+                  }}
+                  value={betAmounts[milestone.id] || ""}
+                  onChange={(e) =>
+                    setBetAmounts((prev) => ({
+                      ...prev,
+                      [milestone.id]: Number(e.target.value),
+                    }))
                   }
-                }}
-                value={betAmount}
-                onChange={(e) => setBetAmount(Number(e.target.value))}
-              />
-              <Button
-                className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold"
-                onClick={() => handleBetSubmit(milestone.id)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Place Bet
-              </Button>
+                />
+                <Button
+                  className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold rounded-xl"
+                  onClick={() => handleBetSubmit(milestone.id)}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Place Bet
+                </Button>
+              </div>
+              <BetList milestoneId={milestone.id} />
             </CardContent>
           )}
         </Card>
