@@ -75,3 +75,18 @@ export const toggleMilestoneCompletion = async (milestoneId: string) => {
     };
   }
 };
+
+export const getMilestoneTotalPot = async (milestoneId: string) => {
+  try {
+    const bets = await prisma.bet.findMany({
+      where: {
+        milestoneId: milestoneId,
+      },
+    });
+
+    return bets.reduce((total, bet) => total + bet.amount, 0);
+  } catch (error) {
+    console.error("Error fetching milestone total pot:", error);
+    return 0;
+  }
+};

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { Loader2, Plus } from "lucide-react";
-import { getMilestones } from "@/server/milestone";
+import { getMilestones, getMilestoneTotalPot } from "@/server/milestone";
 import { Milestone } from "@prisma/client";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
@@ -16,7 +16,19 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
   const router = useRouter();
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMilestones, setLoadingMilestones] = useState<
+    Record<string, boolean>
+  >({});
   const [betAmounts, setBetAmounts] = useState<Record<string, number>>({});
+  const [totalPots, setTotalPots] = useState<Record<string, number>>({});
+
+  const fetchMilestonePot = async (milestoneId: string) => {
+    const total = await getMilestoneTotalPot(milestoneId);
+    setTotalPots((prev) => ({
+      ...prev,
+      [milestoneId]: total,
+    }));
+  };
 
   useEffect(() => {
     const fetchMilestones = async () => {
@@ -24,8 +36,10 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
         setLoading(true);
         const result = await getMilestones(groupId);
         if (result) {
-          console.log(result);
           setMilestones(result);
+          result.forEach(async (milestone) => {
+            await fetchMilestonePot(milestone.id);
+          });
         }
       } catch (error) {
         console.error("Failed to fetch groups:", error);
@@ -51,22 +65,26 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
   };
 
   const handleBetSubmit = async (milestoneId: string) => {
+    setLoadingMilestones((prev) => ({
+      ...prev,
+      [milestoneId]: true,
+    }));
+
     const result = await createBet(betAmounts[milestoneId] || 0, milestoneId);
     if (result.success) {
       setBetAmounts((prev) => ({
         ...prev,
         [milestoneId]: 0,
       }));
+      await fetchMilestonePot(milestoneId);
     }
+
+    setLoadingMilestones((prev) => ({
+      ...prev,
+      [milestoneId]: false,
+    }));
   };
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <Loader2 className="animate-spin" />
-      </div>
-    );
-  }
   return (
     <div className="w-full max-w-2xl">
       {milestones.map((milestone) => (
@@ -77,7 +95,9 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
           <CardHeader className="flex justify-between items-center">
             <div className="">
               <h4 className="font-semibold">{milestone.name}</h4>
-              <p className="text-sm font-medium mt-2">Total Pot: 0.00</p>
+              <p className="text-sm font-medium mt-2">
+                Total Pot: {totalPots[milestone.id]?.toFixed(2) || "0.00"}
+              </p>
             </div>
             <Button
               variant="outline"
@@ -115,13 +135,21 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
                 />
                 <Button
                   className="bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 text-xs sm:text-sm cursor-pointer font-bold rounded-xl"
-                  onClick={() => handleBetSubmit(milestone.id)}
+                  onClick={() => {
+                    handleBetSubmit(milestone.id);
+                    window.location.reload();
+                  }}
+                  disabled={loadingMilestones[milestone.id]}
                 >
-                  <Plus className="h-4 w-4 mr-2" />
+                  {loadingMilestones[milestone.id] ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Plus className="h-4 w-4 mr-2" />
+                  )}
                   Place Bet
                 </Button>
               </div>
-              <BetList milestoneId={milestone.id} />
+              <BetList milestoneId={milestone.id} key={milestone.id} />
             </CardContent>
           )}
         </Card>
