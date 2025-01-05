@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { GroupWithMembers } from "@/types/queries";
+import Image from "next/image";
 
 interface GroupDetailsProps {
   group: GroupWithMembers;
@@ -28,11 +29,13 @@ export function OpenGroup({ group }: GroupDetailsProps) {
         <div className="flex items-center gap-2">
           <div className="flex -space-x-2">
             {group.members.map((member) => (
-              <img
+              <Image
                 key={member.id}
                 src={member.user.image || "/default-avatar.png"}
                 alt={member.user.name || "Member"}
                 className="w-10 h-10 rounded-full border-2 border-white"
+                width={32}
+                height={32}
               />
             ))}
           </div>

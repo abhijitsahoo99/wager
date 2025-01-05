@@ -21,7 +21,7 @@ export const createGroup = async (name: string) => {
         },
       },
     });
-    return { success: true };
+    return { success: true, group };
   } catch (error) {
     console.error(error);
     return { success: false, error: "Failed to create group" };

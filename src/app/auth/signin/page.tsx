@@ -1,5 +1,5 @@
 // src/app/auth/signin/page.tsx
-import { auth, signIn } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { SignInButton } from "@/components/custom/signin-btn";
 

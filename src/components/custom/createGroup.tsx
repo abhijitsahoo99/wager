@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import { Users } from "lucide-react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { createGroup } from "@/server/group";
 
 export const CreateGroup = () => {

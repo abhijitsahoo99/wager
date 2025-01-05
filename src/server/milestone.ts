@@ -13,7 +13,7 @@ export const createMilestone = async (name: string, groupId: string) => {
     const milestone = await prisma.milestone.create({
       data: { name, groupId: groupId },
     });
-    return { success: true };
+    return { success: true, milestone };
   } catch (error) {
     console.error(error);
     return { success: false, error: "Failed to create milestone" };

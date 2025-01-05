@@ -3,7 +3,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { NavBar } from "@/components/custom/navbar";
-import { SplashScreen } from "@/components/custom/splash-screen";
 import { DashboardContent } from "./content";
 
 export default async function DashboardPage() {

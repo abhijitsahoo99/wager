@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
 import { Loader2, Plus } from "lucide-react";
 import { getMilestones, getMilestoneTotalPot } from "@/server/milestone";
 import { Milestone } from "@prisma/client";
@@ -13,9 +12,7 @@ import { createBet } from "@/server/bet";
 import BetList from "./betList";
 
 export const MilestoneList = ({ groupId }: { groupId: string }) => {
-  const router = useRouter();
   const [milestones, setMilestones] = useState<Milestone[]>([]);
-  const [loading, setLoading] = useState(true);
   const [loadingMilestones, setLoadingMilestones] = useState<
     Record<string, boolean>
   >({});
@@ -33,7 +30,6 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
   useEffect(() => {
     const fetchMilestones = async () => {
       try {
-        setLoading(true);
         const result = await getMilestones(groupId);
         if (result) {
           setMilestones(result);
@@ -43,8 +39,6 @@ export const MilestoneList = ({ groupId }: { groupId: string }) => {
         }
       } catch (error) {
         console.error("Failed to fetch groups:", error);
-      } finally {
-        setLoading(false);
       }
     };
 

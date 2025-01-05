@@ -6,6 +6,7 @@ import { getGroups } from "@/server/group";
 import type { GroupWithMembers } from "@/types/queries";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import Image from "next/image";
 
 export const GroupList = () => {
   const router = useRouter();
@@ -55,11 +56,13 @@ export const GroupList = () => {
             <div className="flex items-center gap-2 mt-2">
               <div className="flex -space-x-2">
                 {group.members.slice(0, 3).map((member) => (
-                  <img
+                  <Image
                     key={member.id}
                     src={member.user.image || "/default-avatar.png"}
                     alt={member.user.name || "Member"}
                     className="w-8 h-8 rounded-full border-2 border-white"
+                    width={32}
+                    height={32}
                   />
                 ))}
               </div>

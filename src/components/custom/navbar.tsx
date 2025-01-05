@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { NavBarProps } from "@/types/queries";
 
@@ -23,8 +22,6 @@ function getInitials(name: string) {
 }
 
 export function NavBar({ user }: NavBarProps) {
-  const router = useRouter();
-
   return (
     <div className="border-b">
       <div className="flex h-16 items-center px-4 max-w-7xl mx-auto">

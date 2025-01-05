@@ -3,9 +3,6 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { SplashScreen } from "@/components/custom/splash-screen";
-import { Target } from "lucide-react";
-import styles from "@/styles/getstart.module.scss";
 
 export default async function Home() {
   const session = await auth();

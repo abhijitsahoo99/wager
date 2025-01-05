@@ -25,11 +25,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   events: {
-    createUser: async ({ user }) => {
+    createUser: async ({}) => {
       // console.log("New user created:", user);
       // You can add additional logic here when a user is created
     },
-    signIn: async ({ user, account, profile }) => {
+    signIn: async ({}) => {
       // console.log("User signed in:", user);
       // You can add additional logic here when a user signs in
     },
