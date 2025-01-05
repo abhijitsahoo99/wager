@@ -18,7 +18,7 @@ export default async function GroupPage({ params }: PageProps) {
   }
 
   // Decode the URL-encoded group name
-  const { groupName } = await params;
+  const { groupName } = params;
   console.log("groupName", groupName);
   const decodedGroupName = decodeURIComponent(groupName);
   console.log("Fetching group:", decodedGroupName);
