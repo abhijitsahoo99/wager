@@ -5,9 +5,9 @@ import { OpenGroup } from "@/components/custom/openGroup";
 import { getGroupByName } from "@/server/group";
 import { GroupContent } from "./content";
 interface PageProps {
-  params: {
+  params: Promise<{
     groupName: string;
-  };
+  }>;
 }
 
 export default async function GroupPage({ params }: PageProps) {
@@ -18,7 +18,7 @@ export default async function GroupPage({ params }: PageProps) {
   }
 
   // Decode the URL-encoded group name
-  const { groupName } = params;
+  const { groupName } = await params;
   console.log("groupName", groupName);
   const decodedGroupName = decodeURIComponent(groupName);
   console.log("Fetching group:", decodedGroupName);
