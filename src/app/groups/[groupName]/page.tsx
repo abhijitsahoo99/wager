@@ -11,15 +11,17 @@ interface PageProps {
 }
 
 export default async function GroupPage({ params }: PageProps) {
+  // console.log("params", params);
   const session = await auth();
   if (!session) {
     redirect("/auth/signin");
   }
 
   // Decode the URL-encoded group name
-  const { groupName } = params;
+  const { groupName } = await params;
+  console.log("groupName", groupName);
   const decodedGroupName = decodeURIComponent(groupName);
-  console.log("Fetching group:", decodedGroupName); // Debug log
+  console.log("Fetching group:", decodedGroupName);
 
   const groupResult = await getGroupByName(decodedGroupName);
 

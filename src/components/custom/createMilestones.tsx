@@ -6,13 +6,7 @@ import { Milestone, Plus } from "lucide-react";
 import { useState } from "react";
 import { createMilestone } from "@/server/milestone";
 
-export const CreateMilestones = ({
-  onMilestonesCreated,
-  groupId,
-}: {
-  onMilestonesCreated: () => void;
-  groupId: string;
-}) => {
+export const CreateMilestones = ({ groupId }: { groupId: string }) => {
   const [newMilestoneName, setNewMilestoneName] = useState("");
 
   const handleCreateMilestone = async () => {
@@ -21,7 +15,7 @@ export const CreateMilestones = ({
     const result = await createMilestone(newMilestoneName, groupId);
     if (result.success) {
       setNewMilestoneName("");
-      onMilestonesCreated();
+      window.location.reload();
     } else {
       console.error(result.error);
     }
