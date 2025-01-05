@@ -3,15 +3,8 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
-import { Bet } from "@prisma/client";
 import { getBets } from "@/server/bet";
-
-type BetWithUser = Bet & {
-  user: {
-    name: string | null;
-    email: string | null;
-  };
-};
+import { BetWithUser } from "@/types/queries";
 
 const BetList = ({ milestoneId }: { milestoneId: string }) => {
   const [loading, setLoading] = useState(true);
@@ -62,8 +55,10 @@ const BetList = ({ milestoneId }: { milestoneId: string }) => {
           </CardContent>
         ))}
         <CardContent className="flex justify-between border-2 border-[#F0D9A3] border-opacity-100 rounded-xl py-2">
-          <p>Total</p>
-          <p>{bets.reduce((total, bet) => total + bet.amount, 0).toFixed(2)}</p>
+          <p className="text-base font-bold">Total</p>
+          <p className="text-base font-bold">
+            {bets.reduce((total, bet) => total + bet.amount, 0).toFixed(2)}
+          </p>
         </CardContent>
       </Card>
     </div>

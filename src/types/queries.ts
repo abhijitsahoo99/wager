@@ -31,3 +31,15 @@ export type GroupWithMembers = Group & {
   };
   totalPot?: number;
 };
+
+export type BetWithUser = {
+  id: string;
+  amount: number;
+  milestoneId: string;
+  userId: string;
+  createdAt: Date;
+  user: {
+    name: string | null;
+    email: string | null;
+  };
+};
