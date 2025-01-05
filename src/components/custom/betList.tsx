@@ -6,9 +6,16 @@ import { Loader2 } from "lucide-react";
 import { Bet } from "@prisma/client";
 import { getBets } from "@/server/bet";
 
-const betList = ({ milestoneId }: { milestoneId: string }) => {
+type BetWithUser = Bet & {
+  user: {
+    name: string | null;
+    email: string | null;
+  };
+};
+
+const BetList = ({ milestoneId }: { milestoneId: string }) => {
   const [loading, setLoading] = useState(true);
-  const [bets, setBets] = useState<Bet[]>([]);
+  const [bets, setBets] = useState<BetWithUser[]>([]);
 
   useEffect(() => {
     const fetchBets = async () => {
@@ -45,18 +52,22 @@ const betList = ({ milestoneId }: { milestoneId: string }) => {
         <CardHeader>
           <CardTitle className="text-base font-bold p-0">Bet List</CardTitle>
         </CardHeader>
+        {bets.map((bet) => (
+          <CardContent
+            key={bet.id}
+            className="flex justify-between border-2 border-[#F0D9A3] border-opacity-100 rounded-xl py-2 mb-2"
+          >
+            <p>{bet.user.name || bet.user.email || "Anonymous"}</p>
+            <p>{bet.amount.toFixed(2)}</p>
+          </CardContent>
+        ))}
         <CardContent className="flex justify-between border-2 border-[#F0D9A3] border-opacity-100 rounded-xl py-2">
-          <p>Anon bets</p>
-          <p>
-            {bets
-              .map((bet) => bet.amount)
-              .reduce((a, b) => a + b, 0)
-              .toFixed(2)}
-          </p>
+          <p>Total</p>
+          <p>{bets.reduce((total, bet) => total + bet.amount, 0).toFixed(2)}</p>
         </CardContent>
       </Card>
     </div>
   );
 };
 
-export default betList;
+export default BetList;

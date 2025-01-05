@@ -16,6 +16,7 @@ export const createBet = async (amount: number, milestoneId: string) => {
         userId: session.user.id,
       },
     });
+    console.log("bet", bet);
     return { success: true, bet };
   } catch (error) {
     console.error(error);
@@ -27,6 +28,14 @@ export const getBets = async (milestoneId: string) => {
   const bets = await prisma.bet.findMany({
     where: {
       milestoneId,
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
     },
   });
   return bets;
