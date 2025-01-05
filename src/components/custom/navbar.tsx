@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { NavBarProps } from "@/types/queries";
 
-
 function getInitials(name: string) {
   const names = name.split(" ");
   if (names.length >= 2) {
@@ -46,6 +45,7 @@ export function NavBar({ user }: NavBarProps) {
                   <AvatarImage
                     src={user?.image || ""}
                     alt={user?.name || "User avatar"}
+                    referrerPolicy="no-referrer"
                   />
                   <AvatarFallback className="text-[#DCAC3B]">
                     {user?.name ? getInitials(user.name) : "?"}
