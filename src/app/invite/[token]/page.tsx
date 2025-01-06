@@ -1,5 +1,3 @@
-"use client";
-
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import React from "react";
@@ -44,12 +42,13 @@ export default async function InvitePage({
         </Link>
       </div>
     );
-  } catch (error) {
-    // Add error handling
+  } catch (error: any) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
-        <p className="text-gray-600 mb-6">Failed to process invitation</p>
+        <p className="text-gray-600 mb-6">
+          {error?.message || "Failed to process invitation"}
+        </p>
         <Link href="/home">
           <Button
             variant="ghost"
