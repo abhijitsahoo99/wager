@@ -44,64 +44,72 @@ export const processInvitation = async (token: string) => {
       return { success: false, error: "Not authenticated" };
     }
 
-    // Verify invitation
-    const invitation = await prisma.invitation.findFirst({
-      where: {
-        token,
-        usedAt: null,
-        expiresAt: {
-          gt: new Date(),
+    // Use transaction to ensure data consistency
+    const result = await prisma.$transaction(async (tx) => {
+      // Verify invitation
+      const invitation = await tx.invitation.findFirst({
+        where: {
+          token,
+          expiresAt: {
+            gt: new Date(),
+          },
+          // Only find unused invitations
+          usedAt: null,
         },
-      },
-      include: {
-        group: true,
-      },
-    });
+        include: {
+          group: true,
+        },
+      });
 
-    if (!invitation) {
-      return { success: false, error: "Invalid or expired invitation" };
-    }
+      if (!invitation) {
+        throw new Error("Invalid or expired invitation");
+      }
 
-    // Check if already a member
-    const existingMember = await prisma.groupMember.findFirst({
-      where: {
-        groupId: invitation.groupId,
-        userId: session.user.id,
-      },
-    });
+      // Check if already a member
+      const existingMember = await tx.groupMember.findUnique({
+        where: {
+          userId_groupId: {
+            userId: session.user.id,
+            groupId: invitation.groupId,
+          },
+        },
+      });
 
-    if (existingMember) {
+      if (existingMember) {
+        return {
+          success: true,
+          groupId: invitation.groupId,
+          groupName: invitation.group.name,
+        };
+      }
+
+      // Add user to group
+      await tx.groupMember.create({
+        data: {
+          userId: session.user.id,
+          groupId: invitation.groupId,
+        },
+      });
+
+      // Mark invitation as used
+      await tx.invitation.update({
+        where: { id: invitation.id },
+        data: {
+          usedAt: new Date(),
+          usedBy: session.user.id,
+        },
+      });
+
       return {
         success: true,
         groupId: invitation.groupId,
         groupName: invitation.group.name,
       };
-    }
-
-    // Add user to group
-    await prisma.groupMember.create({
-      data: {
-        userId: session.user.id,
-        groupId: invitation.groupId,
-      },
     });
 
-    // Mark invitation as used
-    await prisma.invitation.update({
-      where: { id: invitation.id },
-      data: {
-        usedAt: new Date(),
-        usedBy: session.user.id,
-      },
-    });
-
-    return {
-      success: true,
-      groupId: invitation.groupId,
-      groupName: invitation.group.name,
-    };
+    return result;
   } catch (error) {
-    console.error(error);
+    console.error("Process invitation error:", error);
     return { success: false, error: "Failed to process invitation" };
   }
 };

@@ -55,15 +55,11 @@ export const getGroups = async () => {
             },
           },
         },
-        // bets: true,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
-
-    // Calculate total pot for each group
-    // const groupsWithTotalPot = groups.map(group => ({
-    //   ...group,
-    //   totalPot: group.bets.reduce((sum, bet) => sum + bet.amount, 0),
-    // }));
 
     return { success: true, groups };
   } catch (error) {
