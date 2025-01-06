@@ -53,8 +53,6 @@ export const processInvitation = async (token: string) => {
           expiresAt: {
             gt: new Date(),
           },
-          // Only find unused invitations
-          usedAt: null,
         },
         include: {
           group: true,
@@ -95,8 +93,8 @@ export const processInvitation = async (token: string) => {
       await tx.invitation.update({
         where: { id: invitation.id },
         data: {
-          usedAt: new Date(),
-          usedBy: session.user.id,
+          lastUsedAt: new Date(),
+          lastUsedBy: session.user.id,
         },
       });
 

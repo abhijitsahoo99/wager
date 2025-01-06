@@ -127,8 +127,8 @@ model Invitation {
   group       Group     @relation(fields: [groupId], references: [id])
   createdAt   DateTime  @default(now())
   expiresAt   DateTime
-  usedAt      DateTime?
-  usedBy      String?
+  lastUsedAt  DateTime? 
+  lastUsedBy  String?   
 
   @@index([groupId])
 }
