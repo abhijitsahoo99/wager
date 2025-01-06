@@ -53,6 +53,9 @@ export const processInvitation = async (token: string) => {
           gt: new Date(),
         },
       },
+      include: {
+        group: true,
+      },
     });
 
     if (!invitation) {
@@ -68,7 +71,11 @@ export const processInvitation = async (token: string) => {
     });
 
     if (existingMember) {
-      return { success: true, groupId: invitation.groupId };
+      return {
+        success: true,
+        groupId: invitation.groupId,
+        groupName: invitation.group.name,
+      };
     }
 
     // Add user to group
@@ -88,7 +95,11 @@ export const processInvitation = async (token: string) => {
       },
     });
 
-    return { success: true, groupId: invitation.groupId };
+    return {
+      success: true,
+      groupId: invitation.groupId,
+      groupName: invitation.group.name,
+    };
   } catch (error) {
     console.error(error);
     return { success: false, error: "Failed to process invitation" };
