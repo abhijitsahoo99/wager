@@ -7,7 +7,6 @@ import type { GroupWithMembers } from "@/types/queries";
 import Image from "next/image";
 import { useState } from "react";
 import { createInvitation } from "@/server/invite";
-import { toast } from "sonner";
 
 interface GroupDetailsProps {
   group: GroupWithMembers;
@@ -19,7 +18,7 @@ export function OpenGroup({ group }: GroupDetailsProps) {
 
   const handleInvite = async () => {
     if (!group?.id) {
-      toast.error("Invalid group");
+      console.error("Invalid group");
       return;
     }
 
@@ -34,17 +33,17 @@ export function OpenGroup({ group }: GroupDetailsProps) {
       if (result.success && result.inviteUrl) {
         try {
           await navigator.clipboard.writeText(result.inviteUrl);
-          toast.success("Invite link copied to clipboard!");
+          console.log("Invite link copied to clipboard!");
         } catch (clipboardError) {
           console.error(clipboardError);
-          toast.error("Failed to copy to clipboard. Please try again.");
+          console.log("Failed to copy to clipboard. Please try again.");
         }
       } else {
-        toast.error(result.error || "Failed to generate invite link");
+        console.error(result.error || "Failed to generate invite link");
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to generate invite link");
+      console.error("Failed to generate invite link");
     } finally {
       setIsGeneratingInvite(false);
     }
