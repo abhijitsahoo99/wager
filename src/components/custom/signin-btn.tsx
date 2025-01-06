@@ -1,15 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
-export function SignInButton() {
+interface SignInButtonProps {
+  callbackUrl?: string;
+}
+
+export function SignInButton({ callbackUrl }: SignInButtonProps) {
   return (
     <Button
       className="w-full bg-[#F0CA61] text-[#000000] hover:bg-[#c78e07] hover:opacity-80 font-roboto rounded-2xl text-lg px-16 py-6 cursor-pointer"
-      onClick={() => signIn("google")}
+      onClick={() => signIn("google", { callbackUrl: callbackUrl || "/home" })}
     >
-      Continue with Google
+      Sign in with Google
     </Button>
   );
 }

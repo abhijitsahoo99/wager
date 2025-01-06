@@ -3,11 +3,26 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { SignInButton } from "@/components/custom/signin-btn";
 
-export default async function SignInPage() {
+interface PageProps {
+  params: Promise<Record<string, never>>;
+  searchParams: Promise<{
+    callbackUrl?: string;
+    inviteToken?: string;
+  }>;
+}
+
+export default async function SignInPage({ searchParams }: PageProps) {
   const session = await auth();
+  const params = await searchParams;
 
   if (session) {
-    redirect("/home");
+    // If there's an invite token, redirect back to the invite page
+    if (params.inviteToken) {
+      return redirect(
+        `/invite/${params.inviteToken}?callbackUrl=${params.callbackUrl}`
+      );
+    }
+    return redirect("/home");
   }
 
   return (
@@ -21,7 +36,7 @@ export default async function SignInPage() {
             Sign in to your account
           </p>
         </div>
-        <SignInButton />
+        <SignInButton callbackUrl={params.callbackUrl} />
       </div>
     </div>
   );

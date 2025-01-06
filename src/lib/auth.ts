@@ -24,6 +24,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     redirect: async ({ url, baseUrl }) => {
+      // If the URL contains an invite token, preserve it
+      if (url.includes("inviteToken=")) {
+        return url;
+      }
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       } else if (new URL(url).origin === baseUrl) {

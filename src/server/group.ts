@@ -56,9 +56,6 @@ export const getGroups = async () => {
           },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
     });
 
     return { success: true, groups };

@@ -7,17 +7,27 @@ interface PageProps {
   params: Promise<{
     token: string;
   }>;
+  searchParams: Promise<{
+    callbackUrl?: string;
+  }>;
 }
 
-export default async function InvitePage({ params }: PageProps) {
+export default async function InvitePage({ params, searchParams }: PageProps) {
   const session = await auth();
   const { token } = await params;
+  const searchParamsData = await searchParams;
 
   if (!session?.user) {
     const callbackUrl = `/invite/${encodeURIComponent(token)}`;
     return redirect(
-      `/auth/signin?callbackUrl=${encodeURIComponent(callbackUrl)}`
+      `/auth/signin?callbackUrl=${encodeURIComponent(
+        callbackUrl
+      )}&inviteToken=${token}`
     );
+  }
+
+  if (searchParamsData.callbackUrl) {
+    revalidatePath("/home");
   }
 
   try {
