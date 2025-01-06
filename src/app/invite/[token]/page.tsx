@@ -1,7 +1,4 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import React from "react";
-import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { processInvitation } from "@/server/invite";
 
