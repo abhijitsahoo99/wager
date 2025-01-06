@@ -19,8 +19,9 @@ export default async function Home() {
           Welcome to Wager
         </h1>
         <p className="text-xl sm:text-2xl leading-8 font-roboto text-[#000000]">
-          Create and join betting pools with your friends for life&apos;s
-          biggest moments.
+          Wager is a fun betting platform where you create private betting
+          groups, set milestones and the one who achieve the milestone first
+          takes the entire pot
         </p>
         <div className="flex justify-center gap-4">
           <Button

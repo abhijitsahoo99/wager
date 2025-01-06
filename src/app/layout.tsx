@@ -22,13 +22,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Wager",
     description:
-      "Create and join betting pools with your friends for life's biggest moments.",
+      "Wager is a fun betting platform where you create private betting groups, set milestones and the one who achieve the milestone first takes the entire pot",
     images: [
       {
         url: "/assets/wager.png", // Make sure to add this image in your public folder
         width: 1200,
         height: 630,
-        alt: "Wager - Create and join betting pools with your friends for life's biggest moments.",
+        alt: "Wager is a fun betting platform where you create private betting groups, set milestones and the one who achieve the milestone first takes the entire pot",
       },
     ],
     locale: "en_US",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Wager",
     description:
-      "Create and join betting pools with your friends for life's biggest moments.",
+      "Wager is a fun betting platform where you create private betting groups, set milestones and the one who achieve the milestone first takes the entire pot",
     images: ["/assets/wager.png"],
   },
 };
