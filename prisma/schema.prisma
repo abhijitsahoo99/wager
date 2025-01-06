@@ -75,6 +75,7 @@ model Group {
   creator    User          @relation("GroupCreator", fields: [creatorId], references: [id])
   members    GroupMember[]
   milestones Milestone[]
+  invitations Invitation[]
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
 }
@@ -118,3 +119,17 @@ model Bet {
   @@index([milestoneId])
   @@index([userId])
 }
+
+model Invitation {
+  id          String    @id @default(cuid())
+  token       String
+  groupId     String
+  group       Group     @relation(fields: [groupId], references: [id])
+  createdAt   DateTime  @default(now())
+  expiresAt   DateTime
+  usedAt      DateTime?
+  usedBy      String?
+
+  @@index([groupId])
+}
+
