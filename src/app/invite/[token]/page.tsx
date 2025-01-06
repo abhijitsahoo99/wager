@@ -1,14 +1,16 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { processInvitation } from "@/server/invite";
+interface PageProps {
+  params: Promise<{
+    token: string;
+  }>;
+}
 
-export default async function InvitePage({
-  params,
-}: {
-  params: { token: string };
-}) {
+export default async function InvitePage({ params }: PageProps) {
+
   const session = await auth();
-  const { token } = params;
+  const { token } = await params;
 
   if (!session?.user) {
     return redirect(`/auth/signin?callbackUrl=/invite/${token}`);
